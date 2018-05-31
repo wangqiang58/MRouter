@@ -1,0 +1,70 @@
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
+ext {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    ArtifactID = 'PluginMiddle'
+    Packaging = 'aar'
+    artifactVersion  = '1.0.0-SNAPSHOT'
+// def artifactVersion = '1.0.0-SNAPSHOT'//发布的快照版本
+    GroupID = 'com.wuba.mobile.plugin'
+    ContextUrl = properties.getProperty("artifactory_contextUrl")
+    ReleaseRepoKey = properties.getProperty("artifactory_release_repoKey")
+    SnapshotRepoKey = properties.getProperty("artifactory_snapshot_repoKey")
+    UserName = properties.getProperty("artifactory_user")
+    Password = properties.getProperty("artifactory_password")
+}
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId GroupID
+            version = artifactVersion
+            artifactId ArtifactID
+            // Tell maven to prepare the generated "* .aar" file for publishing
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+
+            pom.withXml {
+                def root = asNode()
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'The Apache Software License, Version 2.0')
+                license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+                license.appendNode('distribution', 'repo')
+            }
+        }
+    }
+}
+
+artifactory {
+    contextUrl = ContextUrl//"${artifactory_contextUrl}"
+    publish {
+        repository {
+            // The Artifactory repository key to publish to
+            repoKey = artifactVersion.endsWith('SNAPSHOT') ? SnapshotRepoKey : ReleaseRepoKey
+            username = UserName//"${artifactory_user}" // The publisher user name
+            password = Password//"${artifactory_password}" // The publisher password
+            maven = true
+        }
+        defaults {
+            publishArtifacts = true
+            publications(Packaging)
+            publishPom = true //Publish generated POM files to Artifactory (true by default)
+            publishIvy = false //Publish generated Ivy descriptor files to Artifactory (true by default)
+        }
+    }
+    resolve {
+        repository {
+            repoKey = 'jcenter'
+            username = UserName // The resolver user name
+            password = Password // The resolver password
+        }
+    }
+}
+
+// update lib command.
+// windows: gradlew assembleRelease artifactoryPublish
+// mac : permission denied ->
+// mac : chmod 777 gradlew
+// ./gradlew assembleRelease generatePomFileForAarPublication  artifactoryPublish
