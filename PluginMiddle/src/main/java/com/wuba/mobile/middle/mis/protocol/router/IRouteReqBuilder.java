@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.RequiresApi;
 
+import com.wuba.mobile.base.common.callback.IProgressCallBack;
 import com.wuba.mobile.base.common.callback.IRequestCallBack;
 
 /**
@@ -35,6 +36,16 @@ public interface IRouteReqBuilder extends IRouteHub<IRouteReqBuilder> {
      * @param target 路由目标
      */
     IRouteReqBuilder target(String target);
+
+    /**
+     * @param requestID 用于回调
+     */
+    IRouteReqBuilder requestID(String requestID);
+
+    /**
+     * @param host 发起请求的主机
+     */
+    IRouteReqBuilder host(String host);
 
     /**
      * @param action 路由行为
@@ -72,4 +83,11 @@ public interface IRouteReqBuilder extends IRouteHub<IRouteReqBuilder> {
      * @param callBack 请求回调
      */
     boolean go(Context context, IRequestCallBack callBack);
+
+    /**
+     * @param context  发送路由的上下文
+     * @param callBack 请求回调
+     * @param progressCallBack 进度回调
+     */
+    boolean go(Context context, IRequestCallBack callBack, IProgressCallBack progressCallBack);
 }

@@ -34,6 +34,7 @@ public class RouterTest {
         Router.getRootRouter()
                 .build(new RouterReqBuilder(""))
                 .target("A_A1")
+                .host("")
                 .action("getInfo")
                 .with("detail_id",1)
                 .go(null);

@@ -11,6 +11,7 @@ import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
+import com.wuba.mobile.base.common.callback.IProgressCallBack;
 import com.wuba.mobile.base.common.callback.IRequestCallBack;
 import com.wuba.mobile.base.common.utils.Log4Utils;
 
@@ -72,6 +73,18 @@ public class RouterReqBuilder implements IRouteReqBuilder {
     @Override
     public IRouteReqBuilder target(String target) {
         mRequest.setTarget(target);
+        return this;
+    }
+
+    @Override
+    public IRouteReqBuilder requestID(String requestID) {
+        mRequest.setRequestID(requestID);
+        return this;
+    }
+
+    @Override
+    public IRouteReqBuilder host(String host) {
+        mRequest.setHost(host);
         return this;
     }
 
@@ -207,7 +220,13 @@ public class RouterReqBuilder implements IRouteReqBuilder {
 
     @Override
     public boolean go(Context context, IRequestCallBack callBack) {
-        mRequest.setCallback(callBack);
+        go(context,callBack,null);
+        return false;
+    }
+
+    @Override
+    public boolean go(Context context, IRequestCallBack callBack, IProgressCallBack progressCallBack) {
+        mRequest.setCallback(callBack).setProgressCallback(progressCallBack);
         String target = mRequest.getTarget();
         String url = mRequest.getUri();
         if (TextUtils.isEmpty(target)) {//没有指定target
@@ -248,5 +267,7 @@ public class RouterReqBuilder implements IRouteReqBuilder {
         Router.getRootRouterError().onError(RouterError.NO_MATCH_TARGET, "no match target!", mRequest);
         return false;
     }
+
+
 }
 
