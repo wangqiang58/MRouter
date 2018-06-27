@@ -7,7 +7,7 @@ ext {
 
     ArtifactID = 'PluginMiddle'
     Packaging = 'aar'
-    artifactVersion  = '1.0.002-SNAPSHOT'
+    artifactVersion  = '1.0.003-SNAPSHOT'
 // def artifactVersion = '1.0.0-SNAPSHOT'//发布的快照版本
     GroupID = 'com.wuba.mobile.plugin'
     ContextUrl = properties.getProperty("artifactory_contextUrl")

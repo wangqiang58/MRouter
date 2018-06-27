@@ -1,12 +1,11 @@
 package com.wuba.mobile.middle.mis.protocol.router;
 
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.wuba.mobile.base.common.callback.IProgressCallBack;
 import com.wuba.mobile.base.common.callback.IRequestCallBack;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -17,19 +16,7 @@ import java.util.HashMap;
  * @data 2018/5/30
  */
 
-public class RouteRequest implements IRequestCallBack, IProgressCallBack, Parcelable {
-
-    public static final Parcelable.Creator<RouteRequest> CREATOR = new Parcelable.Creator<RouteRequest>() {
-        @Override
-        public RouteRequest createFromParcel(Parcel source) {
-            return new RouteRequest(source);
-        }
-
-        @Override
-        public RouteRequest[] newArray(int size) {
-            return new RouteRequest[size];
-        }
-    };
+public class RouteRequest implements IRequestCallBack, IProgressCallBack, Serializable {
 
     protected String uri;
     protected String host;
@@ -42,18 +29,6 @@ public class RouteRequest implements IRequestCallBack, IProgressCallBack, Parcel
     protected IProgressCallBack mProgressCallback;
 
     public RouteRequest() {
-    }
-
-    protected RouteRequest(Parcel in) {
-        this.uri = in.readString();
-        this.host = in.readString();
-        this.requestID = in.readString();
-        this.target = in.readString();
-        this.action = in.readString();
-        this.extra = in.readBundle();
-        this.requestCode = in.readInt();
-        this.mCallBack = in.readParcelable(IRequestCallBack.class.getClassLoader());
-        this.mProgressCallback = in.readParcelable(IProgressCallBack.class.getClassLoader());
     }
 
     public String getUri() {
@@ -156,23 +131,5 @@ public class RouteRequest implements IRequestCallBack, IProgressCallBack, Parcel
         if (mCallBack != null) {
             mProgressCallback.onProgress(s, l, l1, b);
         }
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.uri);
-        dest.writeString(this.host);
-        dest.writeString(this.requestID);
-        dest.writeString(this.target);
-        dest.writeString(this.action);
-        dest.writeBundle(this.extra);
-        dest.writeInt(this.requestCode);
-        dest.writeParcelable((Parcelable) this.mCallBack, flags);
-        dest.writeParcelable((Parcelable) this.mProgressCallback, flags);
     }
 }
