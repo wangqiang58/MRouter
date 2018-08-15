@@ -1,1 +1,1 @@
-include ':app', ':PluginMiddle'
+include ':sample', ':router', ':annotation', ':compiler'
