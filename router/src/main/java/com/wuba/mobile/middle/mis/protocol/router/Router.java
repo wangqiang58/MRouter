@@ -18,7 +18,7 @@ public class Router {
     public static final String RAW_URI = "raw_uri";
 
     public static synchronized void openLog() {
-        RLog.showLog(true);
+        _Router.getInstatnce().openDebug();
     }
 
     public static IRouter build(String path) {
@@ -39,8 +39,6 @@ public class Router {
      * @param table
      */
     public static void handleRouteTable(RouteTable table) {
-        if (table != null) {
-            table.handle(AptHub.routeTable);
-        }
+        table.handle(Warehouse.routeTable);
     }
 }

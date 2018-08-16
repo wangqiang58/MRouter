@@ -150,6 +150,7 @@ public class RouterProcessor extends AbstractProcessor {
                 .addMethod(methodHandle.build())
                 .addJavadoc(CLASS_JAVA_DOC)
                 .build();
+
         try {
             JavaFile.builder(APT_PACKAGE_NAME, type).build().writeTo(processingEnv.getFiler());
         } catch (IOException e) {

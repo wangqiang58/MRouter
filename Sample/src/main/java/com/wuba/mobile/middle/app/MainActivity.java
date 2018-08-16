@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.wuba.mis.router.apt.SampleRouteTable;
 import com.wuba.mobile.annotation.Route;
 import com.wuba.mobile.middle.mis.protocol.router.RouteStatus;
 import com.wuba.mobile.middle.mis.protocol.router.Router;
@@ -27,12 +28,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //动态添加路由表
-        Router.handleRouteTable(new RouteTable() {
-            @Override
-            public void handle(Map<String, Class<?>> map) {
-                map.put("dynamic", FirstActvity.class);
-            }
-        });
+        Router.handleRouteTable(new SampleRouteTable());
+
 
         this.findViewById(R.id.main_jump_to_First).setOnClickListener(new View.OnClickListener() {
             @Override

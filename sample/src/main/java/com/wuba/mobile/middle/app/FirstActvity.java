@@ -1,6 +1,8 @@
 package com.wuba.mobile.middle.app;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.wuba.mobile.annotation.Route;
 
@@ -13,10 +15,9 @@ import com.wuba.mobile.annotation.Route;
 public class FirstActvity extends Activity {
 
     @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
     }
-
 
 }

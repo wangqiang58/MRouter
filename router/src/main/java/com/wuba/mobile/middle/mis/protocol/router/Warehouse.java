@@ -1,5 +1,7 @@
 package com.wuba.mobile.middle.mis.protocol.router;
 
+import com.wuba.mobile.middle.mis.protocol.router.table.RouteTable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,9 +10,13 @@ import java.util.Map;
  * date : 2018/8/15
  * desc :
  */
-public final class AptHub {
+public final class Warehouse {
 
-    // uri -> Fragment/Activity
+    // Cache route and metas
     public final static Map<String, Class<?>> routeTable = new HashMap<>();
+
+    static void clear() {
+        routeTable.clear();
+    }
 
 }

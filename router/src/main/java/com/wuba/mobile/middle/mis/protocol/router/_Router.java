@@ -4,10 +4,22 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+
+import com.wuba.mobile.middle.mis.protocol.router.chain.AppInterceptorHandler;
+import com.wuba.mobile.middle.mis.protocol.router.chain.ContextValidator;
+import com.wuba.mobile.middle.mis.protocol.router.chain.IntentProcessor;
+import com.wuba.mobile.middle.mis.protocol.router.chain.RealInterceptorsChain;
+import com.wuba.mobile.middle.mis.protocol.router.chain.RouteTableValidator;
+import com.wuba.mobile.middle.mis.protocol.router.util.RLog;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -15,13 +27,31 @@ import android.support.v4.app.ActivityCompat;
  * date : 2018/8/15
  * desc :
  */
-class _Router extends AbsRouter {
+public class _Router extends AbsRouter {
+
+    private volatile static boolean debuggable = false;
+    private static final String TAG = _Router.class.getSimpleName();
+    private final ContextValidator mContextValidator = new ContextValidator();
+    private final IntentProcessor mIntentProcessor = new IntentProcessor();
+    private final RouterInterceptor mRouterInterceptor = new RouteTableValidator();
+    private final AppInterceptorHandler mAppInterceptorHandler = new AppInterceptorHandler();
+    private final RouteTableValidator mRouteTableValidator = new RouteTableValidator();
+
 
     private _Router() {
     }
 
     protected static class Holder {
         static _Router instance = new _Router();
+    }
+
+    public static boolean debuggable() {
+        return debuggable;
+    }
+
+    protected static synchronized void openDebug() {
+        debuggable = true;
+        RLog.i(TAG, "MRouer openLog");
     }
 
     protected static _Router getInstatnce() {
@@ -101,6 +131,22 @@ class _Router extends AbsRouter {
 
     @Override
     public Intent getIntent(@NonNull Object source) {
-        return null;
+        List<RouterInterceptor> interceptors = new ArrayList<>();
+        Collections.addAll(interceptors, mContextValidator, mRouteTableValidator);
+        RealInterceptorsChain chain = new RealInterceptorsChain(source, mRouteRequest, interceptors);
+        RouteResponse response = chain.process();
+        callback(response);
+        Intent intent = new Intent((Context) source, response.getResult().getClass());
+        return intent;
+    }
+
+    private void callback(RouteResponse response) {
+        if (response.getStatus() != RouteStatus.SUCCED) {
+            RLog.w(response.getMessage());
+        }
+        if (mRouteRequest.getCallBack() != null) {
+            mRouteRequest.getCallBack().callback(
+                    response.getStatus(), Uri.parse(mRouteRequest.getUri()), response.getMessage());
+        }
     }
 }

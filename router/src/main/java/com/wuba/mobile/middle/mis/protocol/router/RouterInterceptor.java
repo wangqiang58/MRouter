@@ -6,7 +6,7 @@ import android.content.Context;
 /**
  * author : wangqiang
  * date : 2018/8/15
- * desc :
+ * desc :拦截器
  */
 public interface RouterInterceptor {
 
