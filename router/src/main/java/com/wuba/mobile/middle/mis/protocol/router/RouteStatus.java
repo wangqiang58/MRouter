@@ -13,5 +13,5 @@ public enum RouteStatus {
 
     NOT_FOUND,
 
-    FAIL
+    FAILED
 }

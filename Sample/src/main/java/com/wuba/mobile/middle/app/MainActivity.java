@@ -30,7 +30,6 @@ public class MainActivity extends Activity {
         //动态添加路由表
         Router.handleRouteTable(new SampleRouteTable());
 
-
         this.findViewById(R.id.main_jump_to_First).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +38,7 @@ public class MainActivity extends Activity {
                     public void callback(RouteStatus status, Uri uri, String message) {
 
                     }
-                }).go(MainActivity.this);
+                }).with("args", "hello ,word!").go(MainActivity.this);
             }
         });
     }

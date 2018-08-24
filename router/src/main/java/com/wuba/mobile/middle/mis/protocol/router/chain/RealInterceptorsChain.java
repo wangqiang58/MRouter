@@ -67,7 +67,7 @@ public class RealInterceptorsChain implements RouterInterceptor.Chain {
             if (targetObject != null) {
                 response.setResult(targetObject);
             } else {
-                response.setStatus(RouteStatus.FAIL);
+                response.setStatus(RouteStatus.FAILED);
             }
             return response;
         }

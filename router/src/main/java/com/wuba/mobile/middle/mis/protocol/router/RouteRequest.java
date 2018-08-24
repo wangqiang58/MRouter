@@ -1,5 +1,6 @@
 package com.wuba.mobile.middle.mis.protocol.router;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -17,14 +18,15 @@ public class RouteRequest implements Serializable {
 
     private static final int INVALID_CODE = -1;
     //Base
-    protected String uri;
+    protected Uri uri;
     protected String host;
     protected String target;
     protected String action;
     protected Bundle extra;
     protected int requestCode;
-    protected int flags = -1; //Flag of route
+    protected int flags = 0; //Flag of route
     protected String type;
+    protected Uri data;
     @Nullable
     private Bundle activityOptionsBundle;
     private int enterAnim = INVALID_CODE;
@@ -37,11 +39,11 @@ public class RouteRequest implements Serializable {
     public RouteRequest() {
     }
 
-    public String getUri() {
+    public Uri getUri() {
         return uri;
     }
 
-    public RouteRequest setUri(String uri) {
+    public RouteRequest setUri(Uri uri) {
         this.uri = uri;
         return this;
     }
@@ -53,6 +55,15 @@ public class RouteRequest implements Serializable {
     public RouteRequest setHost(String host) {
         this.host = host;
         return this;
+    }
+
+    public RouteRequest setFlags(int flags) {
+        this.flags = flags;
+        return this;
+    }
+
+    public int getFlags() {
+        return this.flags;
     }
 
     public int getRequestID() {
@@ -91,6 +102,22 @@ public class RouteRequest implements Serializable {
         return this;
     }
 
+    public Uri getData() {
+        return data;
+    }
+
+    public void setData(Uri data) {
+        this.data = data;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public int getRequestCode() {
         return requestCode;
     }
@@ -98,10 +125,6 @@ public class RouteRequest implements Serializable {
     public RouteRequest setRequestCode(int requestCode) {
         this.requestCode = requestCode;
         return this;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public RouterCallback getCallBack() {

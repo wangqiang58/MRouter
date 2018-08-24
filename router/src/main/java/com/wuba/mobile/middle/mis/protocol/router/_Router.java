@@ -13,8 +13,8 @@ import android.support.v4.app.ActivityCompat;
 import com.wuba.mobile.middle.mis.protocol.router.chain.AppInterceptorHandler;
 import com.wuba.mobile.middle.mis.protocol.router.chain.ContextValidator;
 import com.wuba.mobile.middle.mis.protocol.router.chain.IntentProcessor;
+import com.wuba.mobile.middle.mis.protocol.router.chain.IntentValidator;
 import com.wuba.mobile.middle.mis.protocol.router.chain.RealInterceptorsChain;
-import com.wuba.mobile.middle.mis.protocol.router.chain.RouteTableValidator;
 import com.wuba.mobile.middle.mis.protocol.router.util.RLog;
 
 import java.util.ArrayList;
@@ -32,10 +32,10 @@ public class _Router extends AbsRouter {
     private volatile static boolean debuggable = false;
     private static final String TAG = _Router.class.getSimpleName();
     private final ContextValidator mContextValidator = new ContextValidator();
-    private final IntentProcessor mIntentProcessor = new IntentProcessor();
-    private final RouterInterceptor mRouterInterceptor = new RouteTableValidator();
+    private final RouterInterceptor mRouterInterceptor = new IntentProcessor();
     private final AppInterceptorHandler mAppInterceptorHandler = new AppInterceptorHandler();
-    private final RouteTableValidator mRouteTableValidator = new RouteTableValidator();
+    private final IntentValidator mIntentValidator = new IntentValidator();
+    private final IntentProcessor mIntentProcessor = new IntentProcessor();
 
 
     private _Router() {
@@ -64,11 +64,9 @@ public class _Router extends AbsRouter {
         if (intent != null) {
             Bundle options = mRouteRequest.getActivityOptionsBundle();
             if (context instanceof Activity) {
-                ActivityCompat.startActivityForResult((Activity) context, intent,
-                                                      mRouteRequest.getRequestCode(), options);
+                ActivityCompat.startActivityForResult((Activity) context, intent, mRouteRequest.getRequestCode(), options);
                 if (mRouteRequest.getEnterAnim() >= 0 && mRouteRequest.getExitAnim() >= 0) {
-                    ((Activity) context).overridePendingTransition(
-                            mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
+                    ((Activity) context).overridePendingTransition(mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
                 }
             } else {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -132,12 +130,11 @@ public class _Router extends AbsRouter {
     @Override
     public Intent getIntent(@NonNull Object source) {
         List<RouterInterceptor> interceptors = new ArrayList<>();
-        Collections.addAll(interceptors, mContextValidator, mRouteTableValidator);
+        Collections.addAll(interceptors, mContextValidator, mIntentValidator, mIntentProcessor);
         RealInterceptorsChain chain = new RealInterceptorsChain(source, mRouteRequest, interceptors);
         RouteResponse response = chain.process();
         callback(response);
-        Intent intent = new Intent((Context) source, response.getResult().getClass());
-        return intent;
+        return (Intent) response.getResult();
     }
 
     private void callback(RouteResponse response) {
@@ -146,7 +143,7 @@ public class _Router extends AbsRouter {
         }
         if (mRouteRequest.getCallBack() != null) {
             mRouteRequest.getCallBack().callback(
-                    response.getStatus(), Uri.parse(mRouteRequest.getUri()), response.getMessage());
+                    response.getStatus(), mRouteRequest.getUri(), response.getMessage());
         }
     }
 }

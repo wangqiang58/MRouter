@@ -20,7 +20,7 @@ public class ContextValidator implements RouterInterceptor {
     public RouteResponse intercept(Chain chain) {
         RouteRequest request = chain.getRequest();
         if (request.getUri() == null) {
-            return RouteResponse.assemble(RouteStatus.FAIL, "uri=null");
+            return RouteResponse.assemble(RouteStatus.FAILED, "uri=null");
         }
         Context context = null;
         if (chain.getSource() instanceof Context) {
@@ -35,7 +35,7 @@ public class ContextValidator implements RouterInterceptor {
             context = ((android.support.v4.app.Fragment) chain.getSource()).getContext();
         }
         if (context == null) {
-            return RouteResponse.assemble(RouteStatus.FAIL, "Can't retrieve context from source.");
+            return RouteResponse.assemble(RouteStatus.FAILED, "Can't retrieve context from source.");
         }
         return chain.process();
     }

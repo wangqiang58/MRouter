@@ -33,7 +33,7 @@ abstract class AbsRouter implements IRouter {
     @Override
     public IRouter build(Uri uri) {
         mRouteRequest = new RouteRequest();
-        mRouteRequest.setUri(uri.toString());
+        mRouteRequest.setUri(uri);
         Bundle bundle = new Bundle();
         bundle.putString(Router.RAW_URI, uri == null ? null : uri.toString());
         mRouteRequest.setExtra(bundle);

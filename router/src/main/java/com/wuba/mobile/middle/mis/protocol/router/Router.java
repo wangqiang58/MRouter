@@ -12,6 +12,7 @@ import com.wuba.mobile.middle.mis.protocol.router.util.RLog;
  * @description 抽象路由类，继承或实现该类用于实现父路由或子节点路由
  * @create liqiuzuo
  * @data 2018/5/29
+ * 优秀
  */
 
 public class Router {

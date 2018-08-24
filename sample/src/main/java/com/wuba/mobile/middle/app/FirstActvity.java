@@ -1,6 +1,7 @@
 package com.wuba.mobile.middle.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -18,6 +19,9 @@ public class FirstActvity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
+        Intent intent = getIntent();
+        String args = intent.getStringExtra("args");
+
     }
 
 }
