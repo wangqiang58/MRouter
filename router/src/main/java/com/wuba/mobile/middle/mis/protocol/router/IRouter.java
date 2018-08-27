@@ -43,15 +43,21 @@ public interface IRouter {
 
     Intent getIntent(@NonNull Object source);
 
-    void go(Context context, RouterCallback callback);
+    Object getFragment(@NonNull Object source);
+
+
 
     void go(Context context);
 
-    void go(Fragment fragment, RouterCallback callback);
+    void go(Context context, RouterCallback callback);
 
     void go(Fragment fragment);
 
-    void go(android.support.v4.app.Fragment fragment, RouterCallback callback);
+    void go(Fragment fragment, RouterCallback callback);
 
     void go(android.support.v4.app.Fragment fragment);
+
+    void go(android.support.v4.app.Fragment fragment, RouterCallback callback);
+
+
 }

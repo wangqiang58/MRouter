@@ -7,11 +7,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
 import com.wuba.mobile.middle.mis.protocol.router.chain.AppInterceptorHandler;
 import com.wuba.mobile.middle.mis.protocol.router.chain.ContextValidator;
+import com.wuba.mobile.middle.mis.protocol.router.chain.FragmentProcessor;
+import com.wuba.mobile.middle.mis.protocol.router.chain.FragmentValidator;
 import com.wuba.mobile.middle.mis.protocol.router.chain.IntentProcessor;
 import com.wuba.mobile.middle.mis.protocol.router.chain.IntentValidator;
 import com.wuba.mobile.middle.mis.protocol.router.chain.RealInterceptorsChain;
@@ -36,6 +40,8 @@ public class _Router extends AbsRouter {
     private final AppInterceptorHandler mAppInterceptorHandler = new AppInterceptorHandler();
     private final IntentValidator mIntentValidator = new IntentValidator();
     private final IntentProcessor mIntentProcessor = new IntentProcessor();
+    private final FragmentValidator mFragmentValidator = new FragmentValidator();
+    private final FragmentProcessor mFragmentProcessor = new FragmentProcessor();
 
 
     private _Router() {
@@ -59,72 +65,93 @@ public class _Router extends AbsRouter {
     }
 
     @Override
-    public void go(Context context) {
-        Intent intent = getIntent(context);
-        if (intent != null) {
-            Bundle options = mRouteRequest.getActivityOptionsBundle();
-            if (context instanceof Activity) {
-                ActivityCompat.startActivityForResult((Activity) context, intent, mRouteRequest.getRequestCode(), options);
-                if (mRouteRequest.getEnterAnim() >= 0 && mRouteRequest.getExitAnim() >= 0) {
-                    ((Activity) context).overridePendingTransition(mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
-                }
-            } else {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // The below api added in v4:25.1.0
-                // ContextCompat.startActivity(context, intent, options);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    context.startActivity(intent, options);
-                } else {
-                    context.startActivity(intent);
+    public void go(final Context context) {
+        final Intent intent = getIntent(context);
+
+        //Navigation in main Looper
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (intent != null) {
+                    Bundle options = mRouteRequest.getActivityOptionsBundle();
+                    if (context instanceof Activity) {
+                        ActivityCompat.startActivityForResult((Activity) context, intent, mRouteRequest.getRequestCode(), options);
+                        if (mRouteRequest.getEnterAnim() >= 0 && mRouteRequest.getExitAnim() >= 0) {
+                            ((Activity) context).overridePendingTransition(mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
+                        }
+                    } else {
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            context.startActivity(intent, options);
+                        } else {
+                            context.startActivity(intent);
+                        }
+                    }
                 }
             }
-        }
+        });
+
     }
 
     @Override
-    public void go(Fragment fragment) {
-        Intent intent = getIntent(fragment);
-        if (intent != null) {
-            Bundle options = mRouteRequest.getActivityOptionsBundle();
-            if (mRouteRequest.getRequestCode() < 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) { // 4.1
-                    fragment.startActivity(intent, options);
-                } else {
-                    fragment.startActivity(intent);
-                }
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) { // 4.1
-                    fragment.startActivityForResult(intent, mRouteRequest.getRequestCode(), options);
-                } else {
-                    fragment.startActivityForResult(intent, mRouteRequest.getRequestCode());
+    public void go(final Fragment fragment) {
+        final Intent intent = getIntent(fragment);
+
+        //Navigation in main Looper
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (intent != null) {
+                    Bundle options = mRouteRequest.getActivityOptionsBundle();
+                    if (mRouteRequest.getRequestCode() < 0) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) { // 4.1
+                            fragment.startActivity(intent, options);
+                        } else {
+                            fragment.startActivity(intent);
+                        }
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) { // 4.1
+                            fragment.startActivityForResult(intent, mRouteRequest.getRequestCode(), options);
+                        } else {
+                            fragment.startActivityForResult(intent, mRouteRequest.getRequestCode());
+                        }
+                    }
+                    if (mRouteRequest.getEnterAnim() >= 0 && mRouteRequest.getExitAnim() >= 0
+                            && fragment.getActivity() != null) {
+                        // Add transition animation.
+                        fragment.getActivity().overridePendingTransition(
+                                mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
+                    }
                 }
             }
-            if (mRouteRequest.getEnterAnim() >= 0 && mRouteRequest.getExitAnim() >= 0
-                    && fragment.getActivity() != null) {
-                // Add transition animation.
-                fragment.getActivity().overridePendingTransition(
-                        mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
-            }
-        }
+        });
+
     }
 
     @Override
-    public void go(android.support.v4.app.Fragment fragment) {
-        Intent intent = getIntent(fragment);
-        if (intent != null) {
-            Bundle options = mRouteRequest.getActivityOptionsBundle();
-            if (mRouteRequest.getRequestCode() < 0) {
-                fragment.startActivity(intent, options);
-            } else {
-                fragment.startActivityForResult(intent, mRouteRequest.getRequestCode(), options);
+    public void go(final android.support.v4.app.Fragment fragment) {
+        final Intent intent = getIntent(fragment);
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (intent != null) {
+                    Bundle options = mRouteRequest.getActivityOptionsBundle();
+                    if (mRouteRequest.getRequestCode() < 0) {
+                        fragment.startActivity(intent, options);
+                    } else {
+                        fragment.startActivityForResult(intent, mRouteRequest.getRequestCode(), options);
+                    }
+                    if (mRouteRequest.getEnterAnim() >= 0 && mRouteRequest.getExitAnim() >= 0
+                            && fragment.getActivity() != null) {
+                        // Add transition animation.
+                        fragment.getActivity().overridePendingTransition(
+                                mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
+                    }
+                }
             }
-            if (mRouteRequest.getEnterAnim() >= 0 && mRouteRequest.getExitAnim() >= 0
-                    && fragment.getActivity() != null) {
-                // Add transition animation.
-                fragment.getActivity().overridePendingTransition(
-                        mRouteRequest.getEnterAnim(), mRouteRequest.getExitAnim());
-            }
-        }
+        });
+
     }
 
     @Override
@@ -135,6 +162,16 @@ public class _Router extends AbsRouter {
         RouteResponse response = chain.process();
         callback(response);
         return (Intent) response.getResult();
+    }
+
+    @Override
+    public Object getFragment(@NonNull Object source) {
+        List<RouterInterceptor> interceptors = new ArrayList<>();
+        Collections.addAll(interceptors, mContextValidator, mFragmentValidator, mFragmentProcessor);
+        RealInterceptorsChain chain = new RealInterceptorsChain(source, mRouteRequest, interceptors);
+        RouteResponse response = chain.process();
+        callback(response);
+        return response.getResult();
     }
 
     private void callback(RouteResponse response) {

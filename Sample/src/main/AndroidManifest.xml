@@ -23,5 +23,17 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
+
+        <activity
+            android:name="com.wuba.mobile.middle.app.SecondActvity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
+            android:name="com.wuba.mobile.middle.app.ThirdActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 </manifest>

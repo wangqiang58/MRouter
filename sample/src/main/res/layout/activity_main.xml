@@ -12,18 +12,18 @@
         android:text="携带参数跳转"/>
 
     <Button
-        android:id="@+id/main_jump_to_A1"
+        android:id="@+id/main_jump_to_Sencond"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="jump_to_A1"/>
+        android:text="返回结果值"/>
 
     <Button
-        android:id="@+id/main_jump_to_B"
+        android:id="@+id/main_jump_to_third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="jump_to_B"/>
+        android:text="加载Fragment"/>
 
     <Button
         android:id="@+id/main_get_data_from_C"

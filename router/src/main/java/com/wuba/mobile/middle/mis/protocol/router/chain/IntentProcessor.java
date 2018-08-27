@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * author : wangqiang
  * date : 2018/8/16
- * desc :检测路由表是否为空
+ * desc :implicit、explicit intent——>activity
  */
 public class IntentProcessor implements RouterInterceptor {
 

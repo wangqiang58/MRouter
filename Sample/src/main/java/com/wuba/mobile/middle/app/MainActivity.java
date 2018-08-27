@@ -1,10 +1,12 @@
 package com.wuba.mobile.middle.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Toast;
 
 import com.wuba.mis.router.apt.SampleRouteTable;
 import com.wuba.mobile.annotation.Route;
@@ -41,5 +43,32 @@ public class MainActivity extends Activity {
                 }).with("args", "hello ,word!").go(MainActivity.this);
             }
         });
+
+        this.findViewById(R.id.main_jump_to_Sencond).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("/im/second").requestCode(100).callback(new RouterCallback() {
+                    @Override
+                    public void callback(RouteStatus status, Uri uri, String message) {
+
+                    }
+                }).with("args", "hello ,word2!").go(MainActivity.this);
+            }
+        });
+
+        this.findViewById(R.id.main_jump_to_third).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("/im/third").go(MainActivity.this);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_LONG).show();
+        }
     }
 }
