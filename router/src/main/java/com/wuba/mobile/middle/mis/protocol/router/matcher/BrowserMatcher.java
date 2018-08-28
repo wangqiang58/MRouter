@@ -9,7 +9,7 @@ import com.wuba.mobile.middle.mis.protocol.router.RouteRequest;
 /**
  * author : wangqiang
  * date : 2018/8/23
- * desc :
+ * desc :跳转web
  */
 public class BrowserMatcher extends AbsImplicitMatcher {
 

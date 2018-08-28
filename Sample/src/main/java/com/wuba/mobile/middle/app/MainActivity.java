@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.wuba.mis.router.apt.SampleRouteTable;
+import com.wuba.mis.router.apt.Submodule1RouteTable;
+import com.wuba.mis.router.apt.Submodule2RouteTable;
 import com.wuba.mobile.annotation.Route;
 import com.wuba.mobile.middle.mis.protocol.router.RouteStatus;
 import com.wuba.mobile.middle.mis.protocol.router.Router;
@@ -31,6 +33,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         //动态添加路由表
         Router.handleRouteTable(new SampleRouteTable());
+        Router.handleRouteTable(new Submodule1RouteTable());
+        Router.handleRouteTable(new Submodule2RouteTable());
 
         this.findViewById(R.id.main_jump_to_First).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +66,36 @@ public class MainActivity extends Activity {
                 Router.build("/im/third").go(MainActivity.this);
             }
         });
+
+        this.findViewById(R.id.main_get_data_from_webview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("/im/webview").with("url", "file:///android_asset/scheme.html").go(MainActivity.this);
+            }
+        });
+
+        this.findViewById(R.id.id_implicit_native).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("").go(MainActivity.this);
+            }
+        });
+
+        this.findViewById(R.id.id_implicit_page).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("router://implicit?id=9527&status=success").go(MainActivity.this);
+            }
+        });
+
+        this.findViewById(R.id.id_module1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("/crm/main1").go(MainActivity.this);
+            }
+        });
+
+
     }
 
     @Override

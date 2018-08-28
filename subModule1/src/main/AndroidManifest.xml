@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.wuba.mobile.submodule1">
+    <application>
+        <activity android:name=".Main1Activity"></activity>
+    </application>
+</manifest>

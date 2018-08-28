@@ -28,8 +28,7 @@ public class SchemeMatcher extends AbsExplicitMatcher {
         if (isEmpty(uri.getAuthority()) && isEmpty(routeUri.getAuthority())) {
             return true;
         }
-        if (!isEmpty(uri.getAuthority()) && !isEmpty(routeUri.getAuthority())
-                && uri.getAuthority().equals(routeUri.getAuthority())) {
+        if (TextUtils.equals(uri.getAuthority(), routeUri.getAuthority())) {
             if (!cutSlash(uri.getPath()).equals(cutSlash(routeUri.getPath()))) {
                 return false;
             }

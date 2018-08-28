@@ -26,17 +26,29 @@
         android:text="加载Fragment"/>
 
     <Button
-        android:id="@+id/main_get_data_from_C"
+        android:id="@+id/main_get_data_from_webview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="get_data_from_C"/>
+        android:text="加载webview页面"/>
 
     <Button
-        android:id="@+id/main_get_data_from_A"
+        android:id="@+id/id_implicit_native"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="get_data_from:"
+        android:text="隐式唤起app"
         />
+
+    <Button
+        android:id="@+id/id_implicit_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="隐式唤醒activity"/>
+
+    <Button
+        android:id="@+id/id_module1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="跳转到模块2"/>
 
 </LinearLayout>

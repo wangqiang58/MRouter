@@ -1,7 +1,5 @@
 package com.wuba.mobile.middle.mis.protocol.router;
 
-import com.wuba.mobile.middle.mis.protocol.router.table.RouteTable;
-
 import java.util.HashMap;
 import java.util.Map;
 
