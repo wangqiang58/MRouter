@@ -4,12 +4,9 @@ apply plugin: 'maven-publish'
 ext {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-    ArtifactID = 'mrouter-compiler'
-    Packaging = 'aar'
+    ArtifactID = 'mrouter-annotation'
     artifactVersion  = '2.0.001-SNAPSHOT'
-// def artifactVersion = '1.0.0-SNAPSHOT'//发布的快照版本
-    GroupID = 'com.wuba.mobile.base'
+    GroupID = 'com.wuba.mobile.lib'
     ContextUrl = properties.getProperty("artifactory_contextUrl")
     ReleaseRepoKey = properties.getProperty("artifactory_release_repoKey")
     SnapshotRepoKey = properties.getProperty("artifactory_snapshot_repoKey")
@@ -23,8 +20,7 @@ publishing {
             groupId GroupID
             version = artifactVersion
             artifactId ArtifactID
-            // Tell maven to prepare the generated "* .aar" file for publishing
-            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+            artifact("$buildDir/libs/${project.name}.jar")
 
             pom.withXml {
                 def root = asNode()
@@ -42,14 +38,15 @@ artifactory {
     publish {
         repository {
             // The Artifactory repository key to publish to
-            repoKey = artifactVersion.endsWith('SNAPSHOT') ? SnapshotRepoKey : ReleaseRepoKey
+            //repoKey = artifactVersion.endsWith('SNAPSHOT') ? SnapshotRepoKey : ReleaseRepoKey
+            repoKey = SnapshotRepoKey;
             username = UserName//"${artifactory_user}" // The publisher user name
             password = Password//"${artifactory_password}" // The publisher password
             maven = true
         }
         defaults {
             publishArtifacts = true
-            publications(Packaging)
+            //publications(Packaging)
             publishPom = true //Publish generated POM files to Artifactory (true by default)
             publishIvy = false //Publish generated Ivy descriptor files to Artifactory (true by default)
         }

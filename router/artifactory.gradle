@@ -5,11 +5,11 @@ ext {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-    ArtifactID = 'PluginMiddle'
+    ArtifactID = 'mrouter-router'
     Packaging = 'aar'
-    artifactVersion  = '1.0.003-SNAPSHOT'
+    artifactVersion  = '2.0.002-SNAPSHOT'
 // def artifactVersion = '1.0.0-SNAPSHOT'//发布的快照版本
-    GroupID = 'com.wuba.mobile.plugin'
+    GroupID = 'com.wuba.mobile.lib'
     ContextUrl = properties.getProperty("artifactory_contextUrl")
     ReleaseRepoKey = properties.getProperty("artifactory_release_repoKey")
     SnapshotRepoKey = properties.getProperty("artifactory_snapshot_repoKey")
@@ -32,6 +32,16 @@ publishing {
                 license.appendNode('name', 'The Apache Software License, Version 2.0')
                 license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
                 license.appendNode('distribution', 'repo')
+
+                def dependenciesNode = asNode().appendNode('dependencies')
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.api.allDependencies.each {
+                    if(it.group==null || it.name==null || it.version==null) return
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
             }
         }
     }

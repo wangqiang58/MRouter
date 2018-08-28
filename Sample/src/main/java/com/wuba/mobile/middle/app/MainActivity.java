@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Router.openLog();
         //动态添加路由表
         Router.handleRouteTable(new SampleRouteTable());
         Router.handleRouteTable(new Submodule1RouteTable());
@@ -39,12 +40,7 @@ public class MainActivity extends Activity {
         this.findViewById(R.id.main_jump_to_First).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.build("/im/first").callback(new RouterCallback() {
-                    @Override
-                    public void callback(RouteStatus status, Uri uri, String message) {
-
-                    }
-                }).with("args", "hello ,word!").go(MainActivity.this);
+                Router.build("/im/first").with("args", "hello ,word!").go(MainActivity.this);
             }
         });
 
@@ -71,7 +67,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Router.build("/im/webview").with("url", "file:///android_asset/scheme.html").go(MainActivity.this);
-            }
+                }
         });
 
         this.findViewById(R.id.id_implicit_native).setOnClickListener(new View.OnClickListener() {

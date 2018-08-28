@@ -1,3 +1,4 @@
+apply from: "artifactory.gradle"
 apply plugin: 'java-library'
 
 dependencies {

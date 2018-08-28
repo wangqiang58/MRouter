@@ -24,10 +24,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:25.1.0'
-    annotationProcessor project(':compiler')
-    implementation project(':annotation')
-    implementation project(':router')
+    implementation 'com.android.support:appcompat-v7:25.1.1'
+    annotationProcessor 'com.wuba.mobile.lib:mrouter-compiler:2.0.003-SNAPSHOT'
+    implementation 'com.wuba.mobile.lib:mrouter-router:2.0.002-SNAPSHOT'
 
     implementation project(':submodule1')
     implementation project(':submodule2')
