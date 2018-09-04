@@ -13,8 +13,8 @@ import com.wuba.mobile.annotation.Route;
  * date : 2018/8/15
  * desc :
  */
-@Route(path = "/im/first")
-public class FirstActvity extends Activity {
+@Route(path = "/im/args")
+public class ArgsActvity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

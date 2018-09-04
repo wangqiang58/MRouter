@@ -14,8 +14,8 @@ import com.wuba.mobile.annotation.Route;
  * date : 2018/8/15
  * desc :
  */
-@Route(path = "/im/second")
-public class SecondActvity extends Activity {
+@Route(path = "/im/result")
+public class ResultActvity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

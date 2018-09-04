@@ -37,17 +37,17 @@ public class MainActivity extends Activity {
         Router.handleRouteTable(new Submodule1RouteTable());
         Router.handleRouteTable(new Submodule2RouteTable());
 
-        this.findViewById(R.id.main_jump_to_First).setOnClickListener(new View.OnClickListener() {
+        this.findViewById(R.id.im_args).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.build("/im/first").with("args", "hello ,word!").go(MainActivity.this);
+                Router.build("/im/args").with("args", "hello ,word!").go(MainActivity.this);
             }
         });
 
-        this.findViewById(R.id.main_jump_to_Sencond).setOnClickListener(new View.OnClickListener() {
+        this.findViewById(R.id.im_result).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.build("/im/second").requestCode(100).callback(new RouterCallback() {
+                Router.build("/im/result").requestCode(100).callback(new RouterCallback() {
                     @Override
                     public void callback(RouteStatus status, Uri uri, String message) {
 
@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
         this.findViewById(R.id.id_module1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.build("/crm/main1").go(MainActivity.this);
+                Router.build("/submodule1/main1").go(MainActivity.this);
             }
         });
 

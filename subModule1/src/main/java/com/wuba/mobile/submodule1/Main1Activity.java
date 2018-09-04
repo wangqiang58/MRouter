@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.wuba.mobile.annotation.Route;
 
-@Route(path = "/crm/main1")
+@Route(path = "/submodule1/main1")
 public class Main1Activity extends AppCompatActivity {
 
     @Override
